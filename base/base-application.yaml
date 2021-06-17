@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: base
+    namespace: argocd
+    annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+spec:
+    destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+    source:
+        repoURL: $(REPO_URL)
+        targetRevision: HEAD
+        path: base
+        helm:
+            values: |
+                # override values here
+    project: default
+    syncPolicy:
+        automated:
+            prune: true
+            selfHeal: true
